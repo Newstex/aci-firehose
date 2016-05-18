@@ -48,19 +48,9 @@ You must provide your API key either with an “X-API-Key” header, or the “a
 Please do not connect to the firehose with multiple connections. Excessive abuse of the firehose API will result in your Email Address, IP address, and API Key being blocked.
 
 The Firehose API returns a single JSON object per line, but may also return an empty line to help keep the TCP connection alive.
-You should verify the line is not empty before trying to parse a JSON object.
+You should verify the line is not empty before trying to parse a JSON object. The Firehose returns either an `Abstract` or an `INFO` object on each line.
 
-Abstracts are the base object for ACI. An Abstract contains the following parameters:
-
-|Name        |Type         |Description                                                           |
-|------------|-------------|----------------------------------------------------------------------|
-|id          |`String`     |The unique ID for this Abstract                                       |
-|type        |`String`     |For Abstracts, this will always be "Abstract"                         |
-|title       |`String`     |The title (or headline) for this Abstract                             |
-|excerpt     |`String`     |A brief excerpt of the summary for this Abstract                      |
-|date        |`String`     |The date of publication for this article, in UTC ISO Format           |
-|link        |`String`     |The link to this record in ACI, for use with citations or sharing     |
-|pub         |`Publication`|The Publication record this Abstract belongs to                       |
+`INFO` objects may be ignored for the purposes of processing data.
 
 
 ### Search Abstracts [GET]
