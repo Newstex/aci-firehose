@@ -32,10 +32,8 @@ Publications belong to Abstracts. Every Abstract has exactly one Publication, an
 |id          |`String`     |The unique ID for this Publication                                    |
 |type        |`String`     |For Publications, this will always be "Publication"                   |
 |name        |`String`     |The display name for this Publication                                 |
-|lc_classes  |`List`       |A List of strings of LC Class Codes: <https://www.loc.gov/catdir/cpso/lcco/>|                     |
-|date        |`String`     |The date of publication for this article, in UTC ISO Format           |
-|link        |`String`     |The link to this record in ACI, for use with citations or sharing     |
-|pub         |`Publication`|The Publication record this Abstract belongs to                       |
+|lc_classes  |`List`       |A List of strings of LC Class Codes: <https://www.loc.gov/catdir/cpso/lcco/>|
+
 
 # Group API
 
@@ -67,185 +65,26 @@ Abstracts are the base object for ACI. An Abstract contains the following parame
 
 ### Search Abstracts [GET]
 + Parameters
-    + q (optional, string, `Genetics`) ... String `query` to search for in the abstracts.
-    + author (optional, string, `Daniel MacArthur`) ... String `author` name of an Author to search for in the abstracts.
-    + institution (optional, string, `Harvard University`) ... String `institution` name to search for abstracts from.
-    + auth_rank (optional, int, `5`) ... Number Minimum `authrank` (Authoritative Ranking) to retrieve in the Abstracts.
-    + full_text (optional, int, `1`) ... Boolean, 0 or 1. If 1, show only Abstracts with the Full Text available in ACI.
+    + api_key (required, string, `12345-6790-10223467-223478`) ... String `api_key` Your API Key emailed to you after signing up at http://scholar.aci.info/firehose 
     + lc_class (optional, string, `T`) ... String LC Class to limit the Abstracts to.
-    + since (optional, int, `1389034046`) ... Start time in Unix Timestamp format (number of Seconds since Epoch).
-    
+   
 + Response 200 (application/json)
-
-    + Header
-
-            X-Result-Count: 10
 
     + Body
     
-            {
-                "query": "Genetics",
-                "hits": [
-                    {
-                      "_highlightResult": {
-                        "text": {
-                          "matchedWords": [
-                            "genetics"
-                          ],
-                          "matchLevel": "full",
-                          "value": "Many billions of dollars more are spent in biological research into mental disorder than in psychological or social research, yet biological research has largely failed to produce new treatments. Psychology is no less 'real' than physics or <em>genetics</em> and real progress in finding new treatments will only come when biologists, psychologists and social scientists pull together"
-                        },
-                        "title": {
-                          "matchedWords": [
-                            "genetics"
-                          ],
-                          "matchLevel": "full",
-                          "value": "<em>Genetics</em> as Social Work? A Thought Is as Real as an Atom."
-                        }
-                      },
-                      "_snippetResult": {
-                        "text": {
-                          "matchLevel": "full",
-                          "value": "less 'real' than physics or <em>genetics</em> and real progress in"
-                        }
-                      },
-                      "title": "Genetics as Social Work? A Thought Is as Real as an Atom.",
-                      "auth_rank": 90,
-                      "full_text": 0,
-                      "date": {
-                        "ts": 1368271996,
-                        "day": 11,
-                        "weekday": "Saturday",
-                        "month": "May",
-                        "year": 2013
-                      },
-                      "pub": {
-                        "status": 1,
-                        "name": "The Winner Effect | Psychology Today",
-                        "source": "STM Blog List",
-                        "created_at": "2014-02-21T21:05:30.000Z",
-                        "id": "1427c36c977114a0104",
-                        "auth_rank": 9,
-                      },
-                      "authors": [],
-                      "$id": "1427c36c977114a0104/142908c44f878a0012d",
-                      "view_url": "http://acindex.com/view/1427c36c977114a0104/142908c44f878a0012d"
-                    }
-                ],
-                "nbHits": 308,
-                "page": 0,
-                "nbPages": 16,
-                "hitsPerPage": 20,
-                "processingTimeMS": 7,
-                "facets": {
-                    "authors.institutions.$id": {
-                      "14560640478342103d9": 1,
-                      "1455b9981ce342103d9": 1,
-                      "14560688394342103d9": 18
-                    },
-                    "authors.degrees.subject": {
-                      "Science Writing": 1,
-                      "Plant Biology": 1,
-                      "Microbiology;genetics": 18,
-                      "Bioethics, Genetics Ethics, Philosophy": 6,
-                      "Economics": 3,
-                      "Human Genetics": 2,
-                      "Biblical Studies": 1,
-                      "Biological Chemistry": 1,
-                      "Business Administration": 1,
-                      "English and Comparative Literature": 1
-                    },
-                    "lang": {
-                      "en": 308
-                    },
-                    "pub.name": {
-                      "Brain Windows | New tools for peering into the brain…": 4,
-                      "BioEdge": 4,
-                      "Why Evolution Is True": 5,
-                      "Retraction Watch": 5,
-                      "Michael-In-Norfolk - - Coming Out In Mid Life": 5,
-                      "VentureBeat": 6,
-                      "New Europe": 6,
-                      "The Genetically Insane": 35,
-                      "Food for Thought; The CFS Blog": 21,
-                      "GMO Pundit Blog": 19,
-                      "Ethical Technology": 16,
-                      "FuturePundit": 15,
-                      "Scope Blog: Immunology": 12,
-                      "Genomes Unzipped": 9,
-                      "411mania.com": 7
-                    },
-                    "date.year": {
-                      "2014": 141,
-                      "2013": 119,
-                      "2012": 12,
-                      "2011": 6,
-                      "2010": 4,
-                      "2009": 6,
-                      "2008": 4
-                    },
-                    "full_text": {
-                      "1": 80,
-                      "0": 228
-                    },
-                    "pub.country": {
-                      "GBR": 4,
-                      "AUS": 24,
-                      "NONE": 25,
-                      "USA": 109
-                    },
-                    "authors.name": {
-                      "Darleen": 1,
-                      "Daniel MacArthur": 1,
-                      "Caroline Wright": 1,
-                      "Adam Marcus": 1,
-                      "Rebecca Dean": 2,
-                      "Meredith F. Small": 2,
-                      "Kurt Thomas Hunt": 2,
-                      "David Tribe": 18,
-                      "Daniel Vorhaus": 6,
-                      "amarcus41": 4,
-                      "Colorado Peak Politics": 3,
-                      "Tyler Cowen": 3,
-                      "karafyllis": 3,
-                      "rallielena": 3,
-                      "simonbrew": 3
-                    },
-                    "pub.lc_class": {
-                      "RA": 5,
-                      "HQ": 5,
-                      "AP": 6,
-                      "Q": 7,
-                      "HG": 7,
-                      "HB": 8,
-                      "QH": 9,
-                      "S": 41,
-                      "GE": 40,
-                      "JK": 22,
-                      "RC": 14,
-                      "BJ": 13,
-                      "GN": 13,
-                      "JS": 10,
-                      "T": 10
-                    },
-                    "authors.degrees.title": {
-                      "MPH": 1,
-                      "BS": 1,
-                      "JD": 6,
-                      "MA": 10,
-                      "PhD": 33
-                    }
-                },
-                "facets_stats": {
-                    "full_text": {
-                      "avg": 0.25974,
-                      "max": 1,
-                      "min": 0
-                    },
-                    "date.year": {
-                      "avg": 2013.21,
-                      "max": 2014,
-                      "min": 2008
-                    }
-                }
-            }
+        {
+            "id": "1490f95d74f308f0195/154c4597f3d00100002",
+            "type": "Abstract",
+            "title": "Petrobras (PBR) Issues First International Bond in a Year",
+            "date": "2016-05-18T14:07:00.000Z",
+            "pub": {
+                "id": "1490f95d74f308f0195",
+                "type": "Publication",
+                "name": "Zacks Investment Research",
+                "lc_classes": [
+                    "HG"
+                ]
+            },
+            "excerpt": "Brazil's state-run energy giant Petroleo Brasileiro S.A., or Petrobras (PBR - Analyst Report) – having the highest debt load in the oil industry – is issuing new global debts to buy back notes that will mature in the coming years. Notably, this the first time in a year that Petrobras is offering an international bond. The bond offering – likely to close by May 23, 2016 – is also the first time by any player in Brazil since June.  \n\nThe bond offering – likely to close by May 23, 2016 – is also",
+            "link": "http://scholar.aci.info/view/1490f95d74f308f0195/154c4597f3d00100002"
+        }
