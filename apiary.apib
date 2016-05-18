@@ -1,60 +1,67 @@
 FORMAT: 1A
-HOST: http://acindex.com
+HOST: http://scholar.aci.info/api
 
-# ACI Blog Index API
-This API Provides an easy way to access all of the *Authoritative Content* available on ACI Blog Index via a simple RESTful API. In order to access the API, you must first request an Authentication Token.
+# ACI Scholarly Content Firehose
+This API provides a Firehose to access content as it is processed by the *ACI Scholarly Blog Index*. The publishers that are approved for ACI are editorially selected as authoritative in their research field.
 
-
-# Group Authentication
-Every request must be signed with an Authentication Token. This is done by adding an **Authorization** header to your request.
-
-The Authorization header must contain the word "Token", Followed by the **Token ID**, and then by a **Token Signature**. 
-
-## Token Signature
-A **Token Signature** is a sha512 hash of your **Token Secret** concatenated with the current timestamp in UTC
-formatted as `yyyyMMddHH`.
-
-Please note that this signature must be within an hour of the current time, so you will need to regenerate your signature at least once every 60 minutes.
-
-
-## Example Request
-Given the following:
-
-+ **Token ID**: `12345`
-+ **Token Secret**: `MySuperSecretTokenSecret`
-+ **Current UTC Time**: `10:00am August 26, 2014`
-
-You would generate the UTC time format as: `2014082610`
-
-Concatenate that with your token secret: `MySuperSecretTokenSecret2014082610`
-
-Then create a sha512 Hash of that and get the hex digest: 
-    `d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8`
-
-Your request would then include the authorization header:
-    `Authorization: Token 12345 d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8`
-
-In a curl request:
-
-    curl --header "Authorization: Token 12345 d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8" "http://acindex.com/search?q=SomeQuery"
-
+## Authentication
+Authentication is handled by providing an API Key with every request. Each request may contain either an **api_key** URL parameter, or an **X-API-Key** HTTP Header.
+API Keys may be requested by visiting http://scholar.aci.info/firehose
 
 # Group Abstract
-Abstracts related resources of the **ACIndex API**
 
-## Abstract Collection [/search{?q,author,institution,auth_rank,full_text,lc_class,since}]
 Abstracts are the base object for ACI. An Abstract contains the following parameters:
 
 |Name        |Type         |Description                                                           |
 |------------|-------------|----------------------------------------------------------------------|
-|$id         |`String`     |The unique ID for this Abstract                                       |
-|view_url    |`URL`        |The URL to view this Abstract on ACI                                  |
+|id          |`String`     |The unique ID for this Abstract                                       |
+|type        |`String`     |For Abstracts, this will always be "Abstract"                         |
 |title       |`String`     |The title (or headline) for this Abstract                             |
-|auth_rank   |`Number`     |A number (0-100) that describes the Authoritativeness of this Abstract|
-|date.ts     |`Number`     |The date of publication for this article, in seconds since Epoc (Unix)|
-|date.year   |`Number`     |The 4 digit year of publication                                       |
-|date.month  |`String`     |The English name of the month of publication                          |
-|date.weekday|`String`     |The English name for the day of the week of publication               |
+|excerpt     |`String`     |A brief excerpt of the summary for this Abstract                      |
+|date        |`String`     |The date of publication for this article, in UTC ISO Format           |
+|link        |`String`     |The link to this record in ACI, for use with citations or sharing     |
+|pub         |`Publication`|The Publication record this Abstract belongs to                       |
+
+# Group Publication
+
+Publications belong to Abstracts. Every Abstract has exactly one Publication, and Publications have multiple Abstracts.
+
+
+|Name        |Type         |Description                                                           |
+|------------|-------------|----------------------------------------------------------------------|
+|id          |`String`     |The unique ID for this Publication                                    |
+|type        |`String`     |For Publications, this will always be "Publication"                   |
+|name        |`String`     |The display name for this Publication                                 |
+|lc_classes  |`List`       |A List of strings of LC Class Codes: <https://www.loc.gov/catdir/cpso/lcco/>|                     |
+|date        |`String`     |The date of publication for this article, in UTC ISO Format           |
+|link        |`String`     |The link to this record in ACI, for use with citations or sharing     |
+|pub         |`Publication`|The Publication record this Abstract belongs to                       |
+
+# Group API
+
+## Firehose [/firehose{?api_key,lc_class}]
+
+Anyone can connect to the ACI Firehose with a free API key, however the free version of the API has a limited amount of metadata. If you are interested in more metadata for your experiments, please contact us.
+
+You may connect to this API using a basic HTTP request from your favorite programming language, however we’ve also provided a Node.js client library which you may use to ingest content.
+
+You must provide your API key either with an “X-API-Key” header, or the “api_key” URL parameter.
+
+Please do not connect to the firehose with multiple connections. Excessive abuse of the firehose API will result in your Email Address, IP address, and API Key being blocked.
+
+The Firehose API returns a single JSON object per line, but may also return an empty line to help keep the TCP connection alive.
+You should verify the line is not empty before trying to parse a JSON object.
+
+Abstracts are the base object for ACI. An Abstract contains the following parameters:
+
+|Name        |Type         |Description                                                           |
+|------------|-------------|----------------------------------------------------------------------|
+|id          |`String`     |The unique ID for this Abstract                                       |
+|type        |`String`     |For Abstracts, this will always be "Abstract"                         |
+|title       |`String`     |The title (or headline) for this Abstract                             |
+|excerpt     |`String`     |A brief excerpt of the summary for this Abstract                      |
+|date        |`String`     |The date of publication for this article, in UTC ISO Format           |
+|link        |`String`     |The link to this record in ACI, for use with citations or sharing     |
 |pub         |`Publication`|The Publication record this Abstract belongs to                       |
 
 
