@@ -1,0 +1,244 @@
+FORMAT: 1A
+HOST: http://acindex.com
+
+# ACI Blog Index API
+This API Provides an easy way to access all of the *Authoritative Content* available on ACI Blog Index via a simple RESTful API. In order to access the API, you must first request an Authentication Token.
+
+
+# Group Authentication
+Every request must be signed with an Authentication Token. This is done by adding an **Authorization** header to your request.
+
+The Authorization header must contain the word "Token", Followed by the **Token ID**, and then by a **Token Signature**. 
+
+## Token Signature
+A **Token Signature** is a sha512 hash of your **Token Secret** concatenated with the current timestamp in UTC
+formatted as `yyyyMMddHH`.
+
+Please note that this signature must be within an hour of the current time, so you will need to regenerate your signature at least once every 60 minutes.
+
+
+## Example Request
+Given the following:
+
++ **Token ID**: `12345`
++ **Token Secret**: `MySuperSecretTokenSecret`
++ **Current UTC Time**: `10:00am August 26, 2014`
+
+You would generate the UTC time format as: `2014082610`
+
+Concatenate that with your token secret: `MySuperSecretTokenSecret2014082610`
+
+Then create a sha512 Hash of that and get the hex digest: 
+    `d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8`
+
+Your request would then include the authorization header:
+    `Authorization: Token 12345 d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8`
+
+In a curl request:
+
+    curl --header "Authorization: Token 12345 d406bcd846cf9ac4787bfb4bab65986db08cb4953066ccabe3abc88db8899cec2c63990d75ee7b617efa3d968a9689541f2834b41f221a1ae5411af785af89d8" "http://acindex.com/search?q=SomeQuery"
+
+
+# Group Abstract
+Abstracts related resources of the **ACIndex API**
+
+## Abstract Collection [/search{?q,author,institution,auth_rank,full_text,lc_class,since}]
+Abstracts are the base object for ACI. An Abstract contains the following parameters:
+
+|Name        |Type         |Description                                                           |
+|------------|-------------|----------------------------------------------------------------------|
+|$id         |`String`     |The unique ID for this Abstract                                       |
+|view_url    |`URL`        |The URL to view this Abstract on ACI                                  |
+|title       |`String`     |The title (or headline) for this Abstract                             |
+|auth_rank   |`Number`     |A number (0-100) that describes the Authoritativeness of this Abstract|
+|date.ts     |`Number`     |The date of publication for this article, in seconds since Epoc (Unix)|
+|date.year   |`Number`     |The 4 digit year of publication                                       |
+|date.month  |`String`     |The English name of the month of publication                          |
+|date.weekday|`String`     |The English name for the day of the week of publication               |
+|pub         |`Publication`|The Publication record this Abstract belongs to                       |
+
+
+### Search Abstracts [GET]
++ Parameters
+    + q (optional, string, `Genetics`) ... String `query` to search for in the abstracts.
+    + author (optional, string, `Daniel MacArthur`) ... String `author` name of an Author to search for in the abstracts.
+    + institution (optional, string, `Harvard University`) ... String `institution` name to search for abstracts from.
+    + auth_rank (optional, int, `5`) ... Number Minimum `authrank` (Authoritative Ranking) to retrieve in the Abstracts.
+    + full_text (optional, int, `1`) ... Boolean, 0 or 1. If 1, show only Abstracts with the Full Text available in ACI.
+    + lc_class (optional, string, `T`) ... String LC Class to limit the Abstracts to.
+    + since (optional, int, `1389034046`) ... Start time in Unix Timestamp format (number of Seconds since Epoch).
+    
++ Response 200 (application/json)
+
+    + Header
+
+            X-Result-Count: 10
+
+    + Body
+    
+            {
+                "query": "Genetics",
+                "hits": [
+                    {
+                      "_highlightResult": {
+                        "text": {
+                          "matchedWords": [
+                            "genetics"
+                          ],
+                          "matchLevel": "full",
+                          "value": "Many billions of dollars more are spent in biological research into mental disorder than in psychological or social research, yet biological research has largely failed to produce new treatments. Psychology is no less 'real' than physics or <em>genetics</em> and real progress in finding new treatments will only come when biologists, psychologists and social scientists pull together"
+                        },
+                        "title": {
+                          "matchedWords": [
+                            "genetics"
+                          ],
+                          "matchLevel": "full",
+                          "value": "<em>Genetics</em> as Social Work? A Thought Is as Real as an Atom."
+                        }
+                      },
+                      "_snippetResult": {
+                        "text": {
+                          "matchLevel": "full",
+                          "value": "less 'real' than physics or <em>genetics</em> and real progress in"
+                        }
+                      },
+                      "title": "Genetics as Social Work? A Thought Is as Real as an Atom.",
+                      "auth_rank": 90,
+                      "full_text": 0,
+                      "date": {
+                        "ts": 1368271996,
+                        "day": 11,
+                        "weekday": "Saturday",
+                        "month": "May",
+                        "year": 2013
+                      },
+                      "pub": {
+                        "status": 1,
+                        "name": "The Winner Effect | Psychology Today",
+                        "source": "STM Blog List",
+                        "created_at": "2014-02-21T21:05:30.000Z",
+                        "id": "1427c36c977114a0104",
+                        "auth_rank": 9,
+                      },
+                      "authors": [],
+                      "$id": "1427c36c977114a0104/142908c44f878a0012d",
+                      "view_url": "http://acindex.com/view/1427c36c977114a0104/142908c44f878a0012d"
+                    }
+                ],
+                "nbHits": 308,
+                "page": 0,
+                "nbPages": 16,
+                "hitsPerPage": 20,
+                "processingTimeMS": 7,
+                "facets": {
+                    "authors.institutions.$id": {
+                      "14560640478342103d9": 1,
+                      "1455b9981ce342103d9": 1,
+                      "14560688394342103d9": 18
+                    },
+                    "authors.degrees.subject": {
+                      "Science Writing": 1,
+                      "Plant Biology": 1,
+                      "Microbiology;genetics": 18,
+                      "Bioethics, Genetics Ethics, Philosophy": 6,
+                      "Economics": 3,
+                      "Human Genetics": 2,
+                      "Biblical Studies": 1,
+                      "Biological Chemistry": 1,
+                      "Business Administration": 1,
+                      "English and Comparative Literature": 1
+                    },
+                    "lang": {
+                      "en": 308
+                    },
+                    "pub.name": {
+                      "Brain Windows | New tools for peering into the brain…": 4,
+                      "BioEdge": 4,
+                      "Why Evolution Is True": 5,
+                      "Retraction Watch": 5,
+                      "Michael-In-Norfolk - - Coming Out In Mid Life": 5,
+                      "VentureBeat": 6,
+                      "New Europe": 6,
+                      "The Genetically Insane": 35,
+                      "Food for Thought; The CFS Blog": 21,
+                      "GMO Pundit Blog": 19,
+                      "Ethical Technology": 16,
+                      "FuturePundit": 15,
+                      "Scope Blog: Immunology": 12,
+                      "Genomes Unzipped": 9,
+                      "411mania.com": 7
+                    },
+                    "date.year": {
+                      "2014": 141,
+                      "2013": 119,
+                      "2012": 12,
+                      "2011": 6,
+                      "2010": 4,
+                      "2009": 6,
+                      "2008": 4
+                    },
+                    "full_text": {
+                      "1": 80,
+                      "0": 228
+                    },
+                    "pub.country": {
+                      "GBR": 4,
+                      "AUS": 24,
+                      "NONE": 25,
+                      "USA": 109
+                    },
+                    "authors.name": {
+                      "Darleen": 1,
+                      "Daniel MacArthur": 1,
+                      "Caroline Wright": 1,
+                      "Adam Marcus": 1,
+                      "Rebecca Dean": 2,
+                      "Meredith F. Small": 2,
+                      "Kurt Thomas Hunt": 2,
+                      "David Tribe": 18,
+                      "Daniel Vorhaus": 6,
+                      "amarcus41": 4,
+                      "Colorado Peak Politics": 3,
+                      "Tyler Cowen": 3,
+                      "karafyllis": 3,
+                      "rallielena": 3,
+                      "simonbrew": 3
+                    },
+                    "pub.lc_class": {
+                      "RA": 5,
+                      "HQ": 5,
+                      "AP": 6,
+                      "Q": 7,
+                      "HG": 7,
+                      "HB": 8,
+                      "QH": 9,
+                      "S": 41,
+                      "GE": 40,
+                      "JK": 22,
+                      "RC": 14,
+                      "BJ": 13,
+                      "GN": 13,
+                      "JS": 10,
+                      "T": 10
+                    },
+                    "authors.degrees.title": {
+                      "MPH": 1,
+                      "BS": 1,
+                      "JD": 6,
+                      "MA": 10,
+                      "PhD": 33
+                    }
+                },
+                "facets_stats": {
+                    "full_text": {
+                      "avg": 0.25974,
+                      "max": 1,
+                      "min": 0
+                    },
+                    "date.year": {
+                      "avg": 2013.21,
+                      "max": 2014,
+                      "min": 2008
+                    }
+                }
+            }
