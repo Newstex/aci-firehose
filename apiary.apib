@@ -65,26 +65,26 @@ Abstracts are the base object for ACI. An Abstract contains the following parame
 
 ### Search Abstracts [GET]
 + Parameters
-    + api_key (required, string, `12345-6790-10223467-223478`) ... String `api_key` Your API Key emailed to you after signing up at http://scholar.aci.info/firehose 
+    + api_key (required, string, `12345-6790-10223467-223478`) ... String Your API Key emailed to you after signing up at http://scholar.aci.info/firehose 
     + lc_class (optional, string, `T`) ... String LC Class to limit the Abstracts to.
    
 + Response 200 (application/json)
 
     + Body
     
-        {
-            "id": "1490f95d74f308f0195/154c4597f3d00100002",
-            "type": "Abstract",
-            "title": "Petrobras (PBR) Issues First International Bond in a Year",
-            "date": "2016-05-18T14:07:00.000Z",
-            "pub": {
-                "id": "1490f95d74f308f0195",
-                "type": "Publication",
-                "name": "Zacks Investment Research",
-                "lc_classes": [
-                    "HG"
-                ]
-            },
-            "excerpt": "Brazil's state-run energy giant Petroleo Brasileiro S.A., or Petrobras (PBR - Analyst Report) – having the highest debt load in the oil industry – is issuing new global debts to buy back notes that will mature in the coming years. Notably, this the first time in a year that Petrobras is offering an international bond. The bond offering – likely to close by May 23, 2016 – is also the first time by any player in Brazil since June.  \n\nThe bond offering – likely to close by May 23, 2016 – is also",
-            "link": "http://scholar.aci.info/view/1490f95d74f308f0195/154c4597f3d00100002"
-        }
+            {
+                "id": "1490f95d74f308f0195/154c4597f3d00100002",
+                "type": "Abstract",
+                "title": "Petrobras (PBR) Issues First International Bond in a Year",
+                "date": "2016-05-18T14:07:00.000Z",
+                "pub": {
+                    "id": "1490f95d74f308f0195",
+                    "type": "Publication",
+                    "name": "Zacks Investment Research",
+                    "lc_classes": [
+                        "HG"
+                    ]
+                },
+                "excerpt": "Brazil's state-run energy giant Petroleo Brasileiro S.A., or Petrobras (PBR - Analyst Report) – having the highest debt load in the oil industry – is issuing new global debts to buy back notes that will mature in the coming years. Notably, this the first time in a year that Petrobras is offering an international bond. The bond offering – likely to close by May 23, 2016 – is also the first time by any player in Brazil since June.  \n\nThe bond offering – likely to close by May 23, 2016 – is also",
+                "link": "http://scholar.aci.info/view/1490f95d74f308f0195/154c4597f3d00100002"
+            }
