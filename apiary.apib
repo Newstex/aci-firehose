@@ -42,6 +42,79 @@ Publications belong to Abstracts. Every Abstract has exactly one Publication, an
 
 # Group API
 
+## Stories [/stories{?q,filters}]
+
+The search API does not require API authentication, however only limitted data will be available.
+
+### Search Stories [GET]
++ Parameters
+    + q (required, string, `healtcare`) ... String A search string to search the full-text of each document 
+    + filters (optional, string, `authors.degrees.title:PhD`) ... String An optional filter to apply, such as the example which limits to authors with a PhD. Any filter you see in a search is also available in the API. Some filters may require authentication.
+   
++ Response 200 (application/json)
+
+    + Body
+    
+            {
+                "hits": [
+                    {
+                        "title": "My Project - By James Kusena",
+                        "image_url": "https://67.media.tumblr.com/1a5f7aa6649c28acd632a30bb6f41a4b/tumblr_inline_of79gt0WWu1sue702_540.png",
+                        "products": ["aci"],
+                        "full_text": 0,
+                        "date": "2016-10-18T10:00:55.000Z",
+                        "pub": {
+                            "$id": "14c1ee56651000e0009",
+                            "$type": "Publication",
+                            "name": "Healthcare Engineering & Regenerative Therapies Blog",
+                            "content_type": "Abstract"
+                        },
+                        "authors": [
+                            {
+                                "$type": "Author",
+                                "$id": "14c1ee564f3000e0009",
+                                "name": "Elizabeth Ratcliffe",
+                                "first_name": "Elizabeth",
+                                "last_name": "Ratcliffe",
+                                "degrees": [
+                                    {
+                                        "title": "PhD",
+                                        "institution": {
+                                            "$type": "Institution",
+                                            "$id": "1472aa870286f500193",
+                                            "name": "University of Nottingham"
+                                        }
+                                    },
+                                    {
+                                        "title": "MSc",
+                                        "subject": "Molecular Medical Microbiology",
+                                        "institution": {
+                                            "$type": "Institution",
+                                            "$id": "1472aa870286f500193",
+                                            "name": "University of Nottingham"
+                                        }
+                                    },
+                                ],
+                                "positions": [
+                                    {
+                                        "institution": {
+                                            "$type": "Institution",
+                                            "$id": "14876aadd0f6f920132",
+                                            "name": "Loughborough University"
+                                        },
+                                    "title": "Postdoctoral Research Scientist",
+                                    "group": "EPSRC Centre for Innovative Manufacturing in Regenerative Medicine"
+                                    }
+                                ]
+                            }
+                        ],
+                        "view_url": "http://scholar.aci.info/view/14c1ee56651000e0009/157d88b08920001a517bce0",
+                        "$id": "14c1ee56651000e0009/157d88b08920001a517bce0",
+                        "$type": "Story"
+                    }
+                ]
+            }
+
 ## Firehose [/firehose{?api_key,lc_class}]
 
 Anyone can connect to the ACI Firehose with a free API key, however the free version of the API has a limited amount of metadata. If you are interested in more metadata for your experiments, please contact us.
@@ -58,7 +131,7 @@ You should verify the line is not empty before trying to parse a JSON object. Th
 `INFO` objects may be ignored for the purposes of processing data.
 
 
-### Search Abstracts [GET]
+### Stream Firehose [GET]
 + Parameters
     + api_key (required, string, `12345-6790-10223467-223478`) ... String Your API Key emailed to you after signing up at http://scholar.aci.info/firehose 
     + lc_class (optional, string, `T`) ... String LC Class to limit the Abstracts to.
