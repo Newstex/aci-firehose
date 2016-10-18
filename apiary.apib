@@ -1,17 +1,38 @@
 FORMAT: 1A
 HOST: http://scholar.aci.info/api
 
-# ACI Scholarly Content Firehose
+# ACI Developer API
+The ACI Developer API Allows anyone to integrate ACI Search results and information into a custom application, widget, or website.
+While we strongly encorage developers to build amazing applications with our API, ACI reserves the right to block, or require payment for applications
+which use a large amount of requests. Use of our API is goverend by our Terms and Conditions http://aci.info/terms-of-use
+
+Unless otherwise agreed upon, in writing, by ACI Information Group, use of this API is strictly non-commercial.
+
+Make something cool? Send us a link to support@aci.info!
+
+Questions? Visit our support portal at http://support.aci.info.
+
+## ACI Scholarly Content Firehose
 This API provides a Firehose to access content as it is processed by the *ACI Scholarly Blog Index*. The publishers that are approved for ACI are editorially selected as authoritative in their research field.
 
-## IN DEVELOPMENT
-This project is currently in development and is not yet available. To be notified when it becomes available, please sign up at:
+The ACI Firehose project is currently in development and is not yet available. To be notified when it becomes available, please sign up at:
 
 https://aci-info.formstack.com/forms/firehose_notification_list
+
+
+
+## User-Agent Header
+All Requests, no matter which API is used, require a User-Agent header. This header should contain information about your application, a version number, and an email address of a technical contact. Example:
+    
+    User-Agent: Console/1.0 support@aci.info
+    
 
 ## Authentication
 Authentication is handled by providing an API Key with every request. Each request may contain either an **api_key** URL parameter, or an **X-API-Key** HTTP Header.
 API Keys may be requested by visiting http://scholar.aci.info/firehose
+
+
+    
 
 # Group Abstract
 
